@@ -13,10 +13,14 @@
 <body class="h-full grid place-items-center">
 	<div id="app">
       <section>
-         <h2 class="font-bold mb-2">Assignments</h2>
+         <h2 class="font-bold mb-2">In Progress</h2>
 
          <ul>
-            <li v-for="assignment in assignments">
+            <!-- Remember to use keys in loops -->
+            <li
+               v-for="assignment in assignments.filter(a => !a.complete)"
+               :key="assignment.id"
+            >
                <label>
                   <!-- Use 'v-model' to bind form inputs -->
                   <input type="checkbox" v-model="assignment.complete">
@@ -25,10 +29,26 @@
                
             </li>
          </ul>
+      </section>
 
-         <pre>
-            {{ assignments }}
-         </pre>
+      <!-- v-show toggles style between display="none" and '' -->
+      <!-- v-if would remove section completely -->
+      <section v-show="assignments.filter(a => a.complete).length" class="mt-8">
+         <h2 class="font-bold mb-2">Completed</h2>
+
+         <ul>
+            <li
+               v-for="assignment in assignments.filter(a => a.complete)"
+               :key="assignment.id"
+            >
+               <label>
+                  <!-- Use 'v-model' to bind form inputs -->
+                  <input type="checkbox" v-model="assignment.complete">
+                  {{ assignment.name }}
+               </label>
+               
+            </li>
+         </ul>
       </section>
    </div>
 
@@ -37,9 +57,9 @@
          data() {
             return {
                assignments: [
-                  {name: 'Project 1', complete: false},
-                  {name: 'Project 2', complete: false},
-                  {name: 'Project 3', complete: false},
+                  {name: 'Project 1', complete: false , id: 1},
+                  {name: 'Project 2', complete: false , id: 2},
+                  {name: 'Project 3', complete: false , id: 3},
                ]
             }
          }
